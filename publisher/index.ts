@@ -38,11 +38,8 @@ class Publisher {
         const message = this.slots.shift();
         if (message) {
             this.client.publish(this.topic, message, {dup: false}, (err: Error) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log(`MQTT Published: topic => ${this.topic}, message => ${message}`);
-                }
+                const msg = (err) ? `MQTT ${err}` : `MQTT Published: topic => ${this.topic}, message => ${message}`;
+                console.log(msg);
             });
         }
     }
