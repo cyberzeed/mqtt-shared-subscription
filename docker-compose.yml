@@ -33,8 +33,4 @@ services:
     depends_on:
       - mosquitto
     environment:
-      - DOCKER_HOST=unix:///run/docker.sock
       - MQTT_ENDPOINT=mqtt://mosquitto
-    volumes:
-      - ./:/root:z
-      - /run/docker.sock:/run/docker.sock:ro
