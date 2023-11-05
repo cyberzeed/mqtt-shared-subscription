@@ -15,7 +15,7 @@ services:
     build: ./publisher
     deploy:
       mode: replicated
-      replicas: 4
+      replicas: 10
     depends_on:
       - mosquitto
     environment:

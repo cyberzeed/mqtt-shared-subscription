@@ -45,10 +45,10 @@ class Publisher {
     }
 
     async publish (message: string) {
-        if (this.slots.length >= this.size) {
-            console.log("Warning: slot message is full, waiting free slot...");
-            await delay(100);
-        }
+        // if (this.slots.length >= this.size) {
+        //     console.log("Warning: slot message is full, waiting free slot...");
+        //     await delay(100);
+        // }
 
         await this.queue.push(message);
     }
@@ -58,7 +58,7 @@ const main = async (container_name: string) => {
     const publisher = new Publisher(topic, 5);
     while (true) {
         await publisher.publish(`${container_name} ${Date.now()}`);
-        await delay(500);
+        await delay(10);
     }
 }
 
