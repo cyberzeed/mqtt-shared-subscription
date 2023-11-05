@@ -1,0 +1,40 @@
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2.0.18
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    ports:
+      - target: 1883
+        published: 1883
+        protocol: tcp
+      - target: 9001
+        published: 9001
+        protocol: tcp
+
+  publisher:
+    build: ./publisher
+    deploy:
+      mode: replicated
+      replicas: 4
+    depends_on:
+      - mosquitto
+    environment:
+      - DOCKER_HOST=unix:///run/docker.sock
+      - MQTT_ENDPOINT=mqtt://mosquitto
+    volumes:
+      - ./:/root:z
+      - /run/docker.sock:/run/docker.sock:ro
+
+  subscriber:
+    build: ./subscriber
+    deploy:
+      mode: replicated
+      replicas: 2
+    depends_on:
+      - mosquitto
+    environment:
+      - DOCKER_HOST=unix:///run/docker.sock
+      - MQTT_ENDPOINT=mqtt://mosquitto
+    volumes:
+      - ./:/root:z
+      - /run/docker.sock:/run/docker.sock:ro
