@@ -1,5 +1,6 @@
 const os = require("os");
 const mqtt = require("mqtt");
+const { v4: uuidv4 } = require('uuid');
 const {Docker} = require("node-docker-api");
 
 const delay = (time: number) => new Promise((resolve) => setTimeout(resolve, time));
@@ -57,7 +58,7 @@ class Publisher {
 const main = async (container_name: string) => {
     const publisher = new Publisher(topic, 5);
     while (true) {
-        await publisher.publish(`${container_name} ${Date.now()}`);
+        await publisher.publish(`${container_name} ${uuidv4()}`);
         await delay(10);
     }
 }
